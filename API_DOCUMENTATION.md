@@ -3,7 +3,8 @@ This file provide complete API documentation of the system.
 
 ## 1. Base Configuration
 
-- Base URL: `http://localhost:5000`
+- Local base URL: `http://localhost:5000`
+- Production base URL: `https://finance-dashboard-backend-vulq.onrender.com`
 - Content type for request bodies: `application/json`
 - Protected endpoints require:
 
@@ -47,6 +48,15 @@ npm test
 
 - `seedRoles` inserts roles: `admin`, `analyst`, `viewer`
 - `seedAdmin` inserts default admin users with role `admin` and status `active`
+
+**Important limitation – seeded admin only (read this before testing):**
+
+- Admin accounts are created only by the seeding script (`npm run seedAdmin`).
+- No public sign-up exists; normal users cannot create an admin account themselves.
+- For demo/testing, use these seeded admin accounts (if they exist on the environment you are using):
+  - Email: `test1@gmail.com`, Password: `test123`
+  - Email: `test2@gmail.com`, Password: `test124`
+- Using an admin account, you can create additional users (admin, analyst, viewer) via `/users`, and those users must complete registration with `/auth/register` before they can log in.
 
 ## 2.1 How The System Works (Brief Flow)
 
