@@ -113,7 +113,7 @@ export const deleteRecordController = async (req, res) => {
     res.status(200).json({
       deletedRecord,
       success: true,
-      message: "record deleted",
+      message: "record soft deleted",
     });
   } catch (error) {
     if (error.statusCode) {

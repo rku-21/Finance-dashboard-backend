@@ -85,6 +85,7 @@ The detailed API reference is in [API_DOCUMENTATION.md](API_DOCUMENTATION.md).
 It includes the actual route behavior, request examples, role restrictions, query parameters, and error cases for:
 
 - Auth endpoints
+- User management endpoints
 - Record endpoints
 - Dashboard endpoints
 
@@ -94,9 +95,13 @@ It includes the actual route behavior, request examples, role restrictions, quer
 
 ```
 /backend
+  /tests
+    rateLimit.test.js
+    
   /config
     db.js
     seedRoles.js
+    seedAdmin.js
 
   /models
     user.model.js
@@ -127,6 +132,7 @@ It includes the actual route behavior, request examples, role restrictions, quer
 
   /utils
     helpers.js
+    rateLimiter.js
 
 app.js
 server.js
@@ -156,6 +162,12 @@ JWT_SECRET=your_secret
 npm run dev
 ```
 
+4. Run tests
+
+```
+npm test
+```
+
 ---
 
 ## Backend Flow
@@ -170,6 +182,9 @@ Route → Controller --> Service --> Model --> Database
 
 - Role-based access control
 - Financial record management
+- Soft delete for records
+- Rate limiting on auth, record, and dashboard routes
+- User listing filter by role (`GET /users?role=analyst`)
 - Dashboard analytics
 - Clean and scalable architecture
 

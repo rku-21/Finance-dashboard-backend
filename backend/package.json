@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "seedRoles":"node src/config/seedRoles.js",
-    "seedAdmin":"node src/config/seedAdmin.js"
+    "seedRoles": "node src/config/seedRoles.js",
+    "seedAdmin":"node src/config/seedAdmin.js",
+    "test": "node --test"
   },
   "keywords": [],
   "author": "",
@@ -17,10 +18,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   }
 }

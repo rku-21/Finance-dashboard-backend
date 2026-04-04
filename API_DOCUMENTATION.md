@@ -1,6 +1,5 @@
 # API Documentation
-
-This documentation reflects the current backend behavior.
+This file provide complete API documentation of the system.
 
 ## 1. Base Configuration
 
@@ -19,6 +18,21 @@ Server route mounting:
 - `/dashboard` -> dashboard routes
 - `/users` -> user management routes
 
+Rate limiting:
+
+- `/auth` -> `authLimiter` (`20` requests per `15` minutes per IP)
+- `/records` -> `apiLimiter` (`100` requests per `15` minutes per IP)
+- `/dashboard` -> `apiLimiter` (`100` requests per `15` minutes per IP)
+
+Rate limit response (`429`):
+
+```json
+{
+  "success": false,
+  "message": "Too many requests, try again later"
+}
+```
+
 ## 2. Setup And Seeding
 
 Run from `backend` directory:
@@ -28,6 +42,7 @@ npm install
 npm run seedRoles
 npm run seedAdmin
 npm run dev
+npm test
 ```
 
 - `seedRoles` inserts roles: `admin`, `analyst`, `viewer`
@@ -245,6 +260,16 @@ Purpose:
 
 - Admin gets all users.
 
+Optional query filter:
+
+- `role` (case-insensitive): `admin` | `analyst` | `viewer`
+
+Example:
+
+```http
+GET /users?role=analyst
+```
+
 Success response (`200`):
 
 ```json
@@ -405,6 +430,9 @@ Query filters supported:
 - `category`
 - `startDate`
 - `endDate`
+- `search`
+- `page`
+- `limit`
 
 Example:
 
@@ -415,6 +443,7 @@ GET /records?type=expense&category=Food&startDate=2026-04-01&endDate=2026-04-30
 Behavior:
 
 - sorted by `createdAt` descending
+- excludes soft-deleted records (`isDeleted: true`)
 
 ## `GET /records/:id`
 
@@ -422,6 +451,7 @@ Behavior:
 
 - validates Mongo ObjectId
 - returns one record by id
+- soft-deleted records are treated as `404 record not found`
 
 ## `PUT /records/:id`
 
@@ -430,13 +460,15 @@ Behavior:
 - validates Mongo ObjectId
 - updates with validators enabled
 - returns updated record
+- soft-deleted records are treated as `404 record not found`
 
 ## `DELETE /records/:id`
 
 Behavior:
 
 - validates Mongo ObjectId
-- deletes and returns deleted record
+- soft deletes record by setting `isDeleted` to `true`
+- record is not permanently removed from database
 
 Common record errors:
 
@@ -530,4 +562,5 @@ Error:
 - `date`: Date, required
 - `notes`: String, optional
 - `userId`: ObjectId (User), required
+- `isDeleted`: Boolean, default `false`
 - timestamps enabled

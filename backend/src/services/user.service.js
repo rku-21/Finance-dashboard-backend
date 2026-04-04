@@ -3,7 +3,19 @@ import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { Role } from "../models/role.model.js";
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (filter = {}) => {
+    if (filter.role) {
+        const users = await User.find({})
+            .populate({
+                path: "roleId",
+                match: { name: { $regex: `^${filter.role.trim()}$`, $options: "i" } },
+            })
+            .select("-password")
+            .sort({ createdAt: -1 });
+
+        return users.filter((user) => user.roleId);
+    }
+
     const users= await User.find({}).populate("roleId").select("-password").sort({ createdAt: -1 });
     return users;
 

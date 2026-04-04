@@ -2,7 +2,7 @@ import { getAllUsers, createUser, getUserById, updateUserById, deleteUserById, u
 
 export const getAllusersController = async (req, res) => {
     try {
-        const users = await getAllUsers();
+        const users = await getAllUsers({ role: req.query.role });
         res.status(200).json({
             success: true,
             users,
