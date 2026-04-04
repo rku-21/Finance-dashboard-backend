@@ -15,3 +15,10 @@ app.use("/auth", authLimiter, authRoutes);
 app.use("/records", apiLimiter, recordRoutes);
 app.use("/dashboard", apiLimiter, dashboardRoutes);
 app.use("/users", userRoutes);
+
+
+app.get("/", (req, res) => {
+	res.send(
+		"backend server is running Use /auth, /users, /records, /dashboard endpoints"
+	);
+});
